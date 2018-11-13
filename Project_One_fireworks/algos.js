@@ -1,8 +1,64 @@
+var fireworks = [];
+let xposL = 0
+let xposR = 0
+let xposPreviousL = 0
+let xposPreviousR = 0
+let xDifferenceL;
+let xDifferenceR;
 
-let arr = 230
-let gee = 200
-let bee = 0;
 
+function fireworksDisplay() {
+  xposL = leftHandX
+  xposR = rightHandX
+  xDifferenceL = xposR-xposPreviousL
+  xDifferenceR = xposR-xposPreviousR
+
+    for (var i = fireworks.length - 1; i >= 0; i--) {
+        fireworks[i].update();
+        fireworks[i].show();
+
+        let isDone = fireworks[i].done()
+
+        if (isDone) {
+            fireworks.splice(i, 1);
+        }
+    }
+if (abs(xDifferenceL) > 40 || abs(xDifferenceR) > 40){
+
+  if (fireworks.length < 5){
+  fireworks.push(new Firework(rightHandX, random(-3,3),random(-2,-5)))
+} else {
+}
+}
+xposPreviousL = xposL
+xposPreviousR = xposR
+
+noStroke()
+}
+
+// initiate joint vals
+
+function makeObjs(){
+  leftHand = new Joint("leftHand",leftHandX,leftHandY)
+  rightHand = new Joint("rightHand",rightHandX,rightHandY)
+  leftElbow = new Joint("leftElbow",leftElbowX, leftElbowY)
+  rightElbow = new Joint("rightElbow",rightElbowX,rightElbowY)
+  leftShoulder = new Joint("leftShoulder",leftShoulderX,leftShoulderY)
+  rightShoulder = new Joint("rightShoulder",rightShoulderX,rightShoulderY)
+  head = new Joint("Head",xHead, yHead)
+  neck = new Joint("Neck",xNeck,yNeck)
+  spineShoulder = new Joint("SpineShoulder",xSpineShoulder,ySpineShoulder)
+  spine = new Joint("Spine",spineX,spineY)
+  lHip = new Joint("leftHip",lxHip, lyHip)
+  mHip = new Joint("MidHip",mxHip,myHip)
+  rHip = new Joint("rightHip",rxHip, ryHip)
+  lAnkle = new Joint("leftAnkle",lxAnkle, lyAnkle)
+  rAnkle = new Joint("rightAnkle",rxAnkle, ryAnkle)
+  lKnee = new Joint("leftKnee",lkneeX,lkneeY)
+  rKnee = new Joint("rightKnee",rkneeX, rkneeY)
+}
+
+// Smooth points
 
 function smoothEm(){
   leftHand.smoother(leftHandX, leftHandY)
@@ -25,104 +81,29 @@ function smoothEm(){
 }
 
 function drawBody() {
-
-    strokeWeight(5)
-    stroke(255, 255, 255)
-    line(rightHandX, rightHandY, rightElbowX, rightElbowY);
-    line(rightShoulderX, rightShoulderY, rightElbowX, rightElbowY);
-    line(rightShoulderX, rightShoulderY, xSpineShoulder, ySpineShoulder);
-    line(xNeck, yNeck, leftShoulderX, leftShoulderY);
-    line(xNeck, yNeck, rightShoulderX, rightShoulderY);
-    line(lxHip, lyHip, leftShoulderX, leftShoulderY);
-    line(rxHip, ryHip, rightShoulderX, rightShoulderY);
-    line(xSpineShoulder, ySpineShoulder, leftShoulderX, leftShoulderY);
-    line(leftHandX, leftHandY, leftElbowX, leftElbowY);
-    line(leftShoulderX, leftShoulderY, leftElbowX, leftElbowY);
-    line(lxHip, lyHip, mxHip, myHip);
-    line(mxHip, myHip, rxHip, ryHip);
-    line(mxHip, myHip, spineX, spineY);
-    line(spineX,spineY, xSpineShoulder, ySpineShoulder);
-    line(xSpineShoulder, ySpineShoulder, xNeck, yNeck);
-    line(xNeck,yNeck,xHead,yHead);
-    // line(lkneeX, lkneeY, lxHip, lyHip);
-    // line(rkneeX, rkneeY, rxHip, ryHip);
-    // line(lkneeX, lkneeY, lxAnkle, lyAnkle);
-    // line(rkneeX, rkneeY, rxAnkle, ryAnkle);
-    fill(arr,gee,bee)
+    strokeWeight(10)
+    stroke(200, 0, 255)
+    line(rightHand.xpos, rightHand.ypos, rightElbow.xpos, rightElbow.ypos);
+    line(rightShoulder.xpos, rightShoulder.ypos, rightElbow.xpos, rightElbow.ypos);
+    line(rightShoulder.xpos, rightShoulder.ypos, spineShoulder.xpos, spineShoulder.ypos);
+    line(leftShoulder.xpos, leftShoulder.ypos, spineShoulder.xpos, spineShoulder.ypos);
+    line(neck.xpos, neck.ypos, head.xpos, head.ypos);
+    line(lHip.xpos, lHip.ypos, leftShoulder.xpos, leftShoulder.ypos);
+    line(rHip.xpos, rHip.ypos, rightShoulder.xpos, rightShoulder.ypos);
+    line(spineShoulder.xpos, spineShoulder.ypos, leftShoulder.xpos, leftShoulder.ypos);
+    line(leftHand.xpos, leftHand.ypos, leftElbow.xpos, leftElbow.ypos);
+    line(leftShoulder.xpos, leftShoulder.ypos, leftElbow.xpos, leftElbow.ypos);
+    line(lHip.xpos, lHip.ypos, mHip.xpos, mHip.ypos);
+    line(mHip.xpos, mHip.ypos, rHip.xpos, rHip.ypos);
+    line(mHip.xpos, mHip.ypos, spine.xpos, spine.ypos);
+    line(spine.xpos,spine.ypos, spineShoulder.xpos, spineShoulder.ypos);
+    line(spineShoulder.xpos, spineShoulder.ypos, neck.xpos, neck.ypos);
+    line(neck.xpos,neck.ypos,head.xpos,head.ypos);
+    line(lKnee.xpos, lKnee.ypos, lHip.xpos, lHip.ypos);
+    line(rKnee.xpos, rKnee.ypos, rHip.xpos, rHip.ypos);
+    line(lKnee.xpos, lKnee.ypos, lAnkle.xpos, lAnkle.ypos);
+    line(rKnee.xpos, rKnee.ypos, rAnkle.xpos, rAnkle.ypos);
+    fill(100,20,100)
+    ellipse(head.xpos,head.ypos,60,78)
     noStroke()
-    ellipse(mxHip, myHip, 10, 10)
-    ellipse(spineX, spineY, 10, 10)
-    ellipse(xSpineShoulder,ySpineShoulder,10,10)
-    ellipse(xHead,yHead,60,90)
-    ellipse(rightHandX, rightHandY, 10, 10)
-}
-
-function makeObjs(){
-  console.log("making objs")
-  leftHand = new Joint("leftHand",leftHandX,leftHandY)
-  rightHand = new Joint("rightHand",rightHandX,rightHandY)
-  leftElbow = new Joint("leftElbow",leftElbowX, leftElbowY)
-  rightElbow = new Joint("rightElbow",rightElbowX,rightElbowY)
-  leftShoulder = new Joint("leftShoulder",leftShoulderX,leftShoulderY)
-  rightShoulder = new Joint("rightShoulder",rightShoulderX,rightShoulderY)
-  head = new Joint("Head",xHead, yHead)
-  neck = new Joint("Neck",xNeck,yNeck)
-  spineShoulder = new Joint("SpineShoulder",xSpineShoulder,ySpineShoulder)
-  spine = new Joint("Spine",spineX,spineY)
-  lHip = new Joint("leftHip",lxHip, lyHip)
-  mHip = new Joint("MidHip",mxHip,myHip)
-  rHip = new Joint("rightHip",rxHip, ryHip)
-  lAnkle = new Joint("leftAnkle",lxAnkle, lyAnkle)
-  rAnkle = new Joint("rightAnkle",rxAnkle, ryAnkle)
-  lKnee = new Joint("leftKnee",lkneeX,lkneeY)
-  rKnee = new Joint("rightKnee",rkneeX, rkneeY)
-}
-
-function CreateVectors(){
-  leftHand = createVector(leftHandX,leftHandY)
-  rightHand = createVector(rightHandX,rightHandY)
-  leftElbow = createVector(leftElbowX, leftElbowY)
-  rightElbow = createVector(rightElbowX,rightElbowY)
-  leftShoulder = createVector(leftShoulderX,leftShoulderY)
-  rightShoulder = createVector(rightShoulderX,rightShoulderY)
-  head = createVector(xHead, yHead)
-  neck = createVector(xNeck,yNeck)
-  spineShoulder = createVector(xSpineShoulder,ySpineShoulder)
-  spine = createVector(spineX,spineY)
-  lHip = createVector(lxHip, lyHip)
-  mHip = createVector(mxHip,myHip)
-  rHip = createVector(rxHip, ryHip)
-  lAnkle = createVector(lxAnkle, lyAnkle)
-  rAnkle = createVector(rxAnkle, ryAnkle)
-  lKnee = createVector(lkneeX,lkneeY)
-  rKnee = createVector(rkneeX, rkneeY)
-}
-
-var fireworks = [];
-
-function fireworksDisplay() {
-
-  xpos = rightHandX
-  xDifference = xpos-xposPrevious
-
-    for (var i = fireworks.length - 1; i >= 0; i--) {
-        fireworks[i].update();
-        fireworks[i].show();
-        let isDone = fireworks[i].done()
-
-        if (isDone) {
-            fireworks.splice(i, 1);
-        }
-    }
-if (abs(xDifference) > 40){
-  if (fireworks.length < 5){
-  fireworks.push(new Firework(rightHandX, random(-3,3),random(-2,-5)))
-  // console.log(fireworks.length)
-} else {
-  console.log( "too many fireworks")
-}
-  // console.log(xDiff)
-}
-xposPrevious = xpos
-
 }

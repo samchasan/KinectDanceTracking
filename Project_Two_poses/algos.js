@@ -1,137 +1,50 @@
-function smoothEm(){
-  leftHand.smoother(leftHandX, leftHandY)
-  rightHand.smoother(rightHandX, rightHandY)
-  leftElbow.smoother(leftElbowX, leftElbowY)
-  rightElbow.smoother(rightElbowX,rightElbowY)
-  leftShoulder.smoother(leftShoulderX,leftShoulderY)
-  rightShoulder.smoother(rightShoulderX,rightShoulderY)
-  head.smoother(xHead, yHead)
-  neck.smoother(xNeck,yNeck)
-  spineShoulder.smoother(xSpineShoulder,ySpineShoulder)
-  spine.smoother(spineX,spineY)
-  lHip.smoother(lxHip, lyHip)
-  mHip.smoother(mxHip,myHip)
-  rHip.smoother(rxHip, ryHip)
-  lAnkle.smoother(lxAnkle, lyAnkle)
-  rAnkle.smoother(rxAnkle, ryAnkle)
-  lKnee.smoother(lkneeX,lkneeY)
-  rKnee.smoother(rkneeX, rkneeY)
-}
-
-function drawBody() {
-
-    strokeWeight(5)
-    stroke(255, 255, 255)
-    line(rightHandX, rightHandY, rightElbowX, rightElbowY);
-    line(rightShoulderX, rightShoulderY, rightElbowX, rightElbowY);
-    line(rightShoulderX, rightShoulderY, xSpineShoulder, ySpineShoulder);
-    line(xNeck, yNeck, leftShoulderX, leftShoulderY);
-    line(xNeck, yNeck, rightShoulderX, rightShoulderY);
-    line(lxHip, lyHip, leftShoulderX, leftShoulderY);
-    line(rxHip, ryHip, rightShoulderX, rightShoulderY);
-    line(xSpineShoulder, ySpineShoulder, leftShoulderX, leftShoulderY);
-    line(leftHandX, leftHandY, leftElbowX, leftElbowY);
-    line(leftShoulderX, leftShoulderY, leftElbowX, leftElbowY);
-    line(lxHip, lyHip, mxHip, myHip);
-    line(mxHip, myHip, rxHip, ryHip);
-    line(mxHip, myHip, spineX, spineY);
-    line(spineX,spineY, xSpineShoulder, ySpineShoulder);
-    line(xSpineShoulder, ySpineShoulder, xNeck, yNeck);
-    line(xNeck,yNeck,xHead,yHead);
-    // line(lkneeX, lkneeY, lxHip, lyHip);
-    // line(rkneeX, rkneeY, rxHip, ryHip);
-    // line(lkneeX, lkneeY, lxAnkle, lyAnkle);
-    // line(rkneeX, rkneeY, rxAnkle, ryAnkle);
-    fill(arr,gee,bee)
-    noStroke()
-    ellipse(mxHip, myHip, 10, 10)
-    ellipse(spineX, spineY, 10, 10)
-    ellipse(xSpineShoulder,ySpineShoulder,10,10)
-    ellipse(xHead,yHead,60,90)
-    ellipse(rightHandX, rightHandY, 10, 10)
-}
-
-function makeObjs(){
-  console.log("making objs")
-  leftHand = new Joint("leftHand",leftHandX,leftHandY)
-  rightHand = new Joint("rightHand",rightHandX,rightHandY)
-  leftElbow = new Joint("leftElbow",leftElbowX, leftElbowY)
-  rightElbow = new Joint("rightElbow",rightElbowX,rightElbowY)
-  leftShoulder = new Joint("leftShoulder",leftShoulderX,leftShoulderY)
-  rightShoulder = new Joint("rightShoulder",rightShoulderX,rightShoulderY)
-  head = new Joint("Head",xHead, yHead)
-  neck = new Joint("Neck",xNeck,yNeck)
-  spineShoulder = new Joint("SpineShoulder",xSpineShoulder,ySpineShoulder)
-  spine = new Joint("Spine",spineX,spineY)
-  lHip = new Joint("leftHip",lxHip, lyHip)
-  mHip = new Joint("MidHip",mxHip,myHip)
-  rHip = new Joint("rightHip",rxHip, ryHip)
-  lAnkle = new Joint("leftAnkle",lxAnkle, lyAnkle)
-  rAnkle = new Joint("rightAnkle",rxAnkle, ryAnkle)
-  lKnee = new Joint("leftKnee",lkneeX,lkneeY)
-  rKnee = new Joint("rightKnee",rkneeX, rkneeY)
-}
-
-function CreateVectors(){
-  leftHand = createVector(leftHandX,leftHandY)
-  rightHand = createVector(rightHandX,rightHandY)
-  leftElbow = createVector(leftElbowX, leftElbowY)
-  rightElbow = createVector(rightElbowX,rightElbowY)
-  leftShoulder = createVector(leftShoulderX,leftShoulderY)
-  rightShoulder = createVector(rightShoulderX,rightShoulderY)
-  head = createVector(xHead, yHead)
-  neck = createVector(xNeck,yNeck)
-  spineShoulder = createVector(xSpineShoulder,ySpineShoulder)
-  spine = createVector(spineX,spineY)
-  lHip = createVector(lxHip, lyHip)
-  mHip = createVector(mxHip,myHip)
-  rHip = createVector(rxHip, ryHip)
-  lAnkle = createVector(lxAnkle, lyAnkle)
-  rAnkle = createVector(rxAnkle, ryAnkle)
-  lKnee = createVector(lkneeX,lkneeY)
-  rKnee = createVector(rkneeX, rkneeY)
-}
-
 let arr = 230
 let gee = 200
 let bee = 0;
 let buffer = 30
 
 function poses (){
+// Individual variables store true/false comparitors as functions
+    let tPose = teePose()
+    let touchdown = touchDown()
+    let rockstar = rockStar()
 
-textSize(100)
+    const w = width/2
+    const h = height/4
 
-let tPose = teePose()
-let touchdown = touchDown()
-let rockstar = rockStar()
-let noKid = true
+// If function touchdown returns true, show the following
+// and the same with the next poses
 
-const w = width/2
-const h = height/4
+    if (touchdown == true) {
+      image(bg,0,0)
+      drawBody()
+      image(touchdownHL,0,0)
+      image(touchdownText,0,0)
+      image(figures,0,0)
 
-if (touchdown == true) {
-  text("TOUCHDOWN!",w,h)
-  if (noKid){
-  touchdownGIF_create = createImg("touchdownbaby.gif")
-  touchdownGIF_create.position((width/2)-140,(height/2)-160)
-  console.log()
-  noKid = false
+    }
+
+    if (tPose == true ) {
+      image(bg,0,0)
+      drawBody()
+      image(tposeHL,0,0)
+      image(tposeText,0,0)
+      image(figures,0,0)
+
+    }
+    if (rockstar == true ) {
+      image(bg,0,0)
+      image(figures,0,0)
+      drawBody()
+      image(rockstarHL,0,0)
+      image(rockstarText,0,0)
+      image(figures,0,0)
+
+    }
+
 }
-} else {
-  console.log("trying to remove")
-  noKid = true
-}
 
-if (tPose == true ) {
-  text("T-POSE!",w,h)
-}
-if (rockstar == true ) {
-  text("ROCKSTAR!",w,h)
-}
-
-}
-
-
+// Rockstar looks to see a hand above the head and a hand below the waist
 function rockStar(){
   if (leftElbowY < yHead && leftHandY-50 < leftElbowY) {
     if (rightHandY > lyHip){
@@ -147,6 +60,7 @@ function rockStar(){
   }
 }
 
+// touchdown looks for Hands above the head
 
 function touchDown(){
   const yHands = (leftHandY + rightHandY) / 2
@@ -166,7 +80,7 @@ function touchDown(){
 }
 
 
-
+// t-pose looks for hands out at shoulder height, at full length
 
 function teePose (){
   // is there a mean function?
@@ -209,4 +123,75 @@ if(lDiff < 30 && rDiff < 30){
     return false
   }
 }
+}
+
+// initiate objects to hold points
+function makeObjs(){
+  leftHand = new Joint("leftHand",leftHandX,leftHandY)
+  rightHand = new Joint("rightHand",rightHandX,rightHandY)
+  leftElbow = new Joint("leftElbow",leftElbowX, leftElbowY)
+  rightElbow = new Joint("rightElbow",rightElbowX,rightElbowY)
+  leftShoulder = new Joint("leftShoulder",leftShoulderX,leftShoulderY)
+  rightShoulder = new Joint("rightShoulder",rightShoulderX,rightShoulderY)
+  head = new Joint("Head",xHead, yHead)
+  neck = new Joint("Neck",xNeck,yNeck)
+  spineShoulder = new Joint("SpineShoulder",xSpineShoulder,ySpineShoulder)
+  spine = new Joint("Spine",spineX,spineY)
+  lHip = new Joint("leftHip",lxHip, lyHip)
+  mHip = new Joint("MidHip",mxHip,myHip)
+  rHip = new Joint("rightHip",rxHip, ryHip)
+  lAnkle = new Joint("leftAnkle",lxAnkle, lyAnkle)
+  rAnkle = new Joint("rightAnkle",rxAnkle, ryAnkle)
+  lKnee = new Joint("leftKnee",lkneeX,lkneeY)
+  rKnee = new Joint("rightKnee",rkneeX, rkneeY)
+}
+
+// smooth points
+function smoothEm(){
+  leftHand.smoother(leftHandX, leftHandY)
+  rightHand.smoother(rightHandX, rightHandY)
+  leftElbow.smoother(leftElbowX, leftElbowY)
+  rightElbow.smoother(rightElbowX,rightElbowY)
+  leftShoulder.smoother(leftShoulderX,leftShoulderY)
+  rightShoulder.smoother(rightShoulderX,rightShoulderY)
+  head.smoother(xHead, yHead)
+  neck.smoother(xNeck,yNeck)
+  spineShoulder.smoother(xSpineShoulder,ySpineShoulder)
+  spine.smoother(spineX,spineY)
+  lHip.smoother(lxHip, lyHip)
+  mHip.smoother(mxHip,myHip)
+  rHip.smoother(rxHip, ryHip)
+  lAnkle.smoother(lxAnkle, lyAnkle)
+  rAnkle.smoother(rxAnkle, ryAnkle)
+  lKnee.smoother(lkneeX,lkneeY)
+  rKnee.smoother(rkneeX, rkneeY)
+}
+
+
+function drawBody() {
+  strokeWeight(10)
+  stroke(200, 0, 255)
+  line(rightHand.xpos, rightHand.ypos, rightElbow.xpos, rightElbow.ypos);
+  line(rightShoulder.xpos, rightShoulder.ypos, rightElbow.xpos, rightElbow.ypos);
+  line(rightShoulder.xpos, rightShoulder.ypos, spineShoulder.xpos, spineShoulder.ypos);
+  line(leftShoulder.xpos, leftShoulder.ypos, spineShoulder.xpos, spineShoulder.ypos);
+  line(neck.xpos, neck.ypos, head.xpos, head.ypos);
+  line(lHip.xpos, lHip.ypos, leftShoulder.xpos, leftShoulder.ypos);
+  line(rHip.xpos, rHip.ypos, rightShoulder.xpos, rightShoulder.ypos);
+  line(spineShoulder.xpos, spineShoulder.ypos, leftShoulder.xpos, leftShoulder.ypos);
+  line(leftHand.xpos, leftHand.ypos, leftElbow.xpos, leftElbow.ypos);
+  line(leftShoulder.xpos, leftShoulder.ypos, leftElbow.xpos, leftElbow.ypos);
+  line(lHip.xpos, lHip.ypos, mHip.xpos, mHip.ypos);
+  line(mHip.xpos, mHip.ypos, rHip.xpos, rHip.ypos);
+  line(mHip.xpos, mHip.ypos, spine.xpos, spine.ypos);
+  line(spine.xpos,spine.ypos, spineShoulder.xpos, spineShoulder.ypos);
+  line(spineShoulder.xpos, spineShoulder.ypos, neck.xpos, neck.ypos);
+  line(neck.xpos,neck.ypos,head.xpos,head.ypos);
+  line(lKnee.xpos, lKnee.ypos, lHip.xpos, lHip.ypos);
+  line(rKnee.xpos, rKnee.ypos, rHip.xpos, rHip.ypos);
+  line(lKnee.xpos, lKnee.ypos, lAnkle.xpos, lAnkle.ypos);
+  line(rKnee.xpos, rKnee.ypos, rAnkle.xpos, rAnkle.ypos);
+  fill(100,20,100)
+  ellipse(head.xpos,head.ypos,60,78)
+  noStroke()
 }

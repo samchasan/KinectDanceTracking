@@ -10,7 +10,7 @@ function setup() {
   textAlign(CENTER)
 
   const maxHeight = 720
-  const minHeight = 20
+  const minHeight = 80
   const startingPositionR = 640
   const startingPositionL = 0
   // console.log("startingPositionR: " + startingPositionR)
@@ -31,8 +31,34 @@ function setup() {
   stroke(140)
   strokeWeight(4)
   fill(100)
-  // ellipse(10,100,10,30)
   console.log("loading")
   connectKinect()
 
+}
+
+function connectKinect() {
+console.log("connecting")
+    let address = {
+
+        host: '10.17.81.138',
+        port: 9001,
+        path: '/'
+    };
+    kinectron = new Kinectron('kinectron', address);
+    kinectron.makeConnection();
+    kinectron.startMultiFrame(["body","joints"],trackBody);
+
+}
+
+// Called within trackBody
+
+function drawThings(){
+  barsR.update(rightHandX,rightHandY)
+  barsL.update(leftHandX,leftHandY)
+  background(225,30,10,0.9)
+  noStroke()
+  makeObjs()
+  smoothEm()
+  fireworksDisplay();
+  drawBody()
 }

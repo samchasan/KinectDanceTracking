@@ -1,8 +1,9 @@
 let xposPrev = 0;
 let yposPrev = 0;
-// let jointVals = []
 let i = 1
 let totalJoints = 17
+
+// stores values for xpos and ypos of each body joint in an object that smooths out positioning 
 
 class Joint {
 
@@ -52,7 +53,7 @@ class Joint {
   }
 
     show(){
-      fill(200,205,0)
+      fill(200,205,100)
       ellipse(this.xpos,this.ypos,20,20)
 
     }

@@ -1,6 +1,7 @@
-// var kinectron = null;
+let kinectron = null;
 
-// RIGHT
+// declare variables for skeleton
+
 var rightHandX;
 var rightHandY;
 var rightElbowX;
@@ -36,103 +37,123 @@ var lkneeY
 var rkneeX
 var rkneeY
 
-// function trackBody(body) {
+
+// get closest Z value from the list of bodies delivered and determine the closest body
+
+function getClosestBodyIndex(bodies) {
+    var closestZ = Number.MAX_VALUE;
+    var closestBodyIndex = -1;
+
+    for (var i = 0; i < bodies.length; i++) {
+        if (bodies[i].tracked && bodies[i].joints[kinectron.SPINEMID].cameraZ < closestZ) {
+            closestZ = bodies[i].joints[kinectron.SPINEMID].cameraZ;
+            closestBodyIndex = i;
+        }
+    }
+return closestBodyIndex;
+}
+
+// get coordinates and map to canvas
+
+function trackBody(bodies) {
+
+  var closestBody = getClosestBodyIndex(bodies.body);
+  if (closestBody < 0) return
+
+  var body = bodies.body[closestBody]
+
+  // Hands
+  let rHandX = body.joints[kinectron.HANDRIGHT].depthX;
+  rightHandX = map(rHandX, 0, 1, 0, width);
+  let rHandY = body.joints[kinectron.HANDRIGHT].depthY;
+  rightHandY = map(rHandY, 0, 1, 0, height);
+  let lHandX = body.joints[kinectron.HANDLEFT].depthX;
+  leftHandX = map(lHandX, 0, 1, 0, width);
+  let lHandY = body.joints[kinectron.HANDLEFT].depthY;
+  leftHandY = map(lHandY, 0, 1, 0, height);
+
+  // Elbows
+  let rElbowX = body.joints[kinectron.ELBOWRIGHT].depthX;
+  rightElbowX = map(rElbowX, 0, 1, 0, width);
+  let rElbowY = body.joints[kinectron.ELBOWRIGHT].depthY;
+  rightElbowY = map(rElbowY, 0, 1, 0, height);
+  let lElbowX = body.joints[kinectron.ELBOWLEFT].depthX;
+  leftElbowX = map(lElbowX, 0, 1, 0, width);
+  let lElbowY = body.joints[kinectron.ELBOWLEFT].depthY;
+  leftElbowY = map(lElbowY, 0, 1, 0, height);
+
+  // Shoulders
+  let rShoulderX = body.joints[kinectron.SHOULDERRIGHT].depthX;
+  rightShoulderX = map(rShoulderX, 0, 1, 0, width);
+  let rShoulderY = body.joints[kinectron.SHOULDERRIGHT].depthY;
+  rightShoulderY = map(rShoulderY, 0, 1, 0, height);
+  let lShoulderX = body.joints[kinectron.SHOULDERLEFT].depthX;
+  leftShoulderX = map(lShoulderX, 0, 1, 0, width);
+  let lShoulderY = body.joints[kinectron.SHOULDERLEFT].depthY;
+  leftShoulderY = map(lShoulderY, 0, 1, 0, height);
+
+  // CENTER
+  let neckX = body.joints[kinectron.NECK].depthX;
+  xNeck = map(neckX, 0, 1, 0, width);
+  let neckY = body.joints[kinectron.NECK].depthY;
+  yNeck = map(neckY, 0, 1, 0, height);
+  let headX = body.joints[kinectron.HEAD].depthX;
+  xHead = map(headX, 0, 1, 0, width);
+  let headY = body.joints[kinectron.HEAD].depthY;
+  yHead = map(headY, 0, 1, 0, height);
+  let spineShoulderX = body.joints[kinectron.SPINESHOULDER].depthX;
+  xSpineShoulder = map(spineShoulderX, 0, 1, 0, width);
+  let spineShoulderY = body.joints[kinectron.SPINESHOULDER].depthY;
+  ySpineShoulder = map(spineShoulderY, 0, 1, 0, height);
+
+  // Hips
+  let mHipX = body.joints[kinectron.SPINEBASE].depthX;
+  mxHip = map(mHipX, 0, 1, 0, width);
+  let mHipY = body.joints[kinectron.SPINEBASE].depthY;
+  myHip = map(mHipY, 0, 1, 0, height);
+  let rHipX = body.joints[kinectron.HIPRIGHT].depthX;
+  rxHip = map(rHipX, 0, 1, 0, width);
+  let rHipY = body.joints[kinectron.HIPRIGHT].depthY;
+  ryHip = map(rHipY, 0, 1, 0, height);
+  let lHipX = body.joints[kinectron.HIPLEFT].depthX;
+  lxHip = map(lHipX, 0, 1, 0, width);
+  let lHipY = body.joints[kinectron.HIPLEFT].depthY;
+  lyHip = map(lHipY, 0, 1, 0, height);
+
+
+// functions called to create
+drawThings()
+
+}
+
+
+
+// UNUSED LEVELS FOR A GAME
 //
-//   console.log("intrackbody")
-//   // Hands
-//   var rHandX = body.joints[kinectron.HANDRIGHT].depthX;
-//   rightHandX = map(rHandX, 0, 1, 0, width);
-//   var rHandY = body.joints[kinectron.HANDRIGHT].depthY;
-//   rightHandY = map(rHandY, 0, 1, 0, height);
-//   var lHandX = body.joints[kinectron.HANDLEFT].depthX;
-//   leftHandX = map(lHandX, 0, 1, 0, width);
-//   var lHandY = body.joints[kinectron.HANDLEFT].depthY;
-//   leftHandY = map(lHandY, 0, 1, 0, height);
+// let levelOne = false
 //
-//   console.log(leftHandX + ', ' + leftHandY + '; ' rightHandX + ', ' + rightHandY)
+// function greeting() {
+//   if (levelOne == false){
+//   if (xHeight > 30){
+//     titleOne.html("Welcome!")
+//     setTimeout(function(){
+//       titleTwo.html("Now Jump!")
+//       levelOne = true
+//     },800)
 //
-//   // Elbows
-//   var rElbowX = body.joints[kinectron.ELBOWRIGHT].depthX;
-//   rightElbowX = map(rElbowX, 0, 1, 0, width);
-//   var rElbowY = body.joints[kinectron.ELBOWRIGHT].depthY;
-//   rightElbowY = map(rElbowY, 0, 1, 0, height);
-//   var lElbowX = body.joints[kinectron.ELBOWLEFT].depthX;
-//   leftElbowX = map(lElbowX, 0, 1, 0, width);
-//   var lElbowY = body.joints[kinectron.ELBOWLEFT].depthY;
-//   leftElbowY = map(lElbowY, 0, 1, 0, height);
+//   }
+// }
+// }
 //
-  // // Shoulders
-  // var rShoulderX = body.joints[kinectron.SHOULDERRIGHT].depthX;
-  // rightShoulderX = map(rShoulderX, 0, 1, 0, width);
-  // var rShoulderY = body.joints[kinectron.SHOULDERRIGHT].depthY;
-  // rightShoulderY = map(rShoulderY, 0, 1, 0, height);
-  // var lShoulderX = body.joints[kinectron.SHOULDERLEFT].depthX;
-  // leftShoulderX = map(lShoulderX, 0, 1, 0, width);
-  // var lShoulderY = body.joints[kinectron.SHOULDERLEFT].depthY;
-  // leftShoulderY = map(lShoulderY, 0, 1, 0, height);
-  //
-  // // CENTER
-  // var neckX = body.joints[kinectron.NECK].depthX;
-  // xNeck = map(neckX, 0, 1, 0, width);
-  // var neckY = body.joints[kinectron.NECK].depthY;
-  // yNeck = map(neckY, 0, 1, 0, height);
-  // var headX = body.joints[kinectron.HEAD].depthX;
-  // xHead = map(headX, 0, 1, 0, width);
-  // var headY = body.joints[kinectron.HEAD].depthY;
-  // yHead = map(headY, 0, 1, 0, height);
-  // var spineShoulderX = body.joints[kinectron.SPINESHOULDER].depthX;
-  // xSpineShoulder = map(spineShoulderX, 0, 1, 0, width);
-  // var spineShoulderY = body.joints[kinectron.SPINESHOULDER].depthY;
-  // ySpineShoulder = map(spineShoulderY, 0, 1, 0, height);
-  //
-  // // Hips
-  // var mHipX = body.joints[kinectron.SPINEBASE].depthX;
-  // mxHip = map(mHipX, 0, 1, 0, width);
-  // var mHipY = body.joints[kinectron.SPINEBASE].depthY;
-  // myHip = map(mHipY, 0, 1, 0, height);
-  // var rHipX = body.joints[kinectron.HIPRIGHT].depthX;
-  // rxHip = map(rHipX, 0, 1, 0, width);
-  // var rHipY = body.joints[kinectron.HIPRIGHT].depthY;
-  // ryHip = map(rHipY, 0, 1, 0, height);
-  // var lHipX = body.joints[kinectron.HIPLEFT].depthX;
-  // lxHip = map(lHipX, 0, 1, 0, width);
-  // var lHipY = body.joints[kinectron.HIPLEFT].depthY;
-  // lyHip = map(lHipY, 0, 1, 0, height);
-  //
-  // // Spine
-  // var sPineX = body.joints[kinectron.SPINEMID].depthX;
-  // spineX = map(sPineX, 0, 1, 0, width);
-  // var sPineY = body.joints[kinectron.SPINEMID].depthY;
-  // spineY = map(sPineY, 0, 1, 0, height);
-  //
-  // // Knees
-  // var rKneeX = body.joints[kinectron.KNEERIGHT].depthX;
-  // rkneeX = map(rKneeX, 0, 1, 0, width);
-  // var rKneeY = body.joints[kinectron.KNEERIGHT].depthY;
-  // rkneeY = map(rKneeY, 0, 1, 0, height);
-  // var lKneeX = body.joints[kinectron.KNEELEFT].depthX;
-  // lkneeX = map(lKneeX, 0, 1, 0, width);
-  // var lKneeY = body.joints[kinectron.KNEELEFT].depthY;
-  // lkneeY = map(lKneeY, 0, 1, 0, height);
-
-  // Ankles
-  // var lAnkleX = body.joints[kinectron.ANKLELEFT].depthX;
-  // lxAnkle = map(lAnkleX, 0, 1, 0, width);
-  // var lAnkleY = body.joints[kinectron.ANKLELEFT].depthY;
-  // lyAnkle = map(lAnkleY, 0, 1, 0, height);
-  // var rAnkleX = body.joints[kinectron.ANKLERIGHT].depthX;
-  // rxAnkle = map(rAnkleX, 0, 1, 0, width);
-  // var rAnkleY = body.joints[kinectron.ANKLERIGHT].depthY;
-  // ryAnkle = map(rAnkleY, 0, 1, 0, height);
-
-  // jointVals = [leftHand.jointVals,rightHand.jointVals,leftElbow.jointVals]
-
-  // console.log(jointVals)
-  // background(10,10,10)
-
-
-    // poses();
-    // drawBody();
-    // makeObjs();
-    // smoothEm();
-    // fireworksDisplay();
+// let levelTwo = false
+//
+// function jumping(){
+//   if(levelTwo == false){
+//   if (yHeight > 40){
+//     titleOne.html("")
+//     titleTwo.html("Good Jump!")
+//     levelTwo = true
+//   }
+//   console.log("in Jumping")
+// }
+// }

@@ -1,6 +1,6 @@
 
 class Firework {
-    constructor(xpos,xVel, yVel) {
+    constructor(xpos, xVel, yVel) {
         this.hu = floor(random(256))
         this.height = 800
         this.firework = new Particle(xpos, this.height, this.hu, xVel, yVel)
@@ -9,6 +9,7 @@ class Firework {
     }
 
     update() {
+
         if (!this.exploded) {
             this.firework.applyForce(gravity);
             this.firework.update();
@@ -34,7 +35,7 @@ class Firework {
       }
 
       done() {
-        console.log('checking')
+        // console.log('checking')
           if (this.exploded == true && this.particles[0].done()) {
               return true;
           } else {
@@ -43,6 +44,7 @@ class Firework {
       }
 
     show() {
+
         if (!this.exploded) {
             this.firework.show()
         } else if (this.exploded){

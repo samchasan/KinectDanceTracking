@@ -7,8 +7,8 @@ class Particle {
         this.acc = createVector(0, -0.90);
 
 
-        if (this.hu){
-          this.vel = createVector(0,random(-6,-12))
+        if (this.firework){
+          this.vel = createVector(xVel,yVel)
         } else {
         // this.vel = createVector(xVel,yVel)
         this.vel = p5.Vector.random2D();
@@ -26,18 +26,11 @@ class Particle {
         if (this.pos.x >= width){
           this.pos.x = 0
         }
-        if (this.pos.x <= 0){
+        if (this.pos.x < 0){
           this.pos.x = width
-        }
-        if (this.pos.y >= height){
-          this.pos.y = 0
-        }
-        if (this.pos.y <= 0){
-          this.pos.y = height
         }
         this.acc.mult(0);
         this.lifespan -= 1
-        // console.log(this.lifespan)
     }
 
     done() {
@@ -50,11 +43,11 @@ class Particle {
 
 
     show() {
-        if (this.hu) {
-            strokeWeight(4);
+        if (this.firework) {
+            strokeWeight(10);
             stroke(this.hu, 230, 100, this.lifespan);
         } else {
-            strokeWeight(20);
+            strokeWeight(10);
             stroke(this.hu, 230, 100, this.lifespan);
             point(this.pos.x, this.pos.y)
         }
