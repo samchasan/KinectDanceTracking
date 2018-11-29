@@ -1,0 +1,53 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+
+div {
+margin: 10px;
+}
+
+button {
+    border: none;
+	    border-radius: 10px;
+    color: white;
+    padding: 0px 15px 10px;
+	    opacity: 0.8;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+button:hover {
+    opacity:0.6;
+}
+
+button:active {
+	    opacity: 1.0;
+}
+
+button:focus{
+ border-color:transparent!important;
+ outline:none;
+}
+
+#record {
+	    background-color: #3CB371; /* Green */
+}
+#stop {
+	    background-color: #CD5C5C; /* Crimson */
+}
+#clear {
+	    background-color: #4682B4; /* Blue */
+}
+#save {
+	    background-color: #B8860B; /* Gold */
+}
+
+#canvas {
+margin: 10px;
+}
